@@ -6,7 +6,66 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
-<body>
-    <h1>To Do App</h1>
+    <div class="card">
+        <div class="card-header">
+            <h1>To Do App</h1>
+        </div>
+        <div class="card-body">
+            <form>
+                <label for="to-do">New to do</label>
+                <input type="text" id="to-do" name="to-do" title="To-do">
+                <button class="btn" type="submit">Add</button>
+            </form>
+            <div class="card-body-col-left">
+                <h2>To do</h2>
+                <ol class="card-body-to-do-list">
+                    <li class="todo-row">
+                        Write HTML
+                        <form>
+                            <button type="submit">&times;</button>
+                        </form>
+                        <form>
+                            <button type="submit">&#10003;</button>
+                        </form>
+                    </li>
+                    <li class="todo-row">
+                        Write CSS
+                        <form>
+                            <button type="submit">&times;</button>
+                        </form>
+                        <form>
+                            <button type="submit">&#10003;</button>
+                        </form>
+                    </li>
+                    <li class="todo-row">
+                        Write Javascript
+                        <form>
+                            <button type="submit">&times;</button>
+                        </form>
+                        <form>
+                            <button type="submit">&#10003;</button>
+                        </form>
+                    </li>
+                </ol>
+            </div>
+            <div class="card-body-col-right">
+                <h2>Done</h2>
+                <ol>
+                    <li class="todo-row">
+                        Record an intro
+                        <form>
+                            <button>&times;</button>
+                        </form>
+                    </li>
+                    <li class="todo-row">
+                        Setup environment
+                        <form>
+                            <button>&times;</button>
+                        </form>
+                    </li>
+                </ol>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
