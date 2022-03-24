@@ -19,33 +19,17 @@
             <div class="card-body-col-left">
                 <h2>To do</h2>
                 <ol class="card-body-to-do-list">
-                    <li class="todo-row">
-                        Write HTML
-                        <form>
-                            <button type="submit">&times;</button>
-                        </form>
-                        <form>
-                            <button type="submit">&#10003;</button>
-                        </form>
-                    </li>
-                    <li class="todo-row">
-                        Write CSS
-                        <form>
-                            <button type="submit">&times;</button>
-                        </form>
-                        <form>
-                            <button type="submit">&#10003;</button>
-                        </form>
-                    </li>
-                    <li class="todo-row">
-                        Write Javascript
-                        <form>
-                            <button type="submit">&times;</button>
-                        </form>
-                        <form>
-                            <button type="submit">&#10003;</button>
-                        </form>
-                    </li>
+                    <% todos.forEach(element => { %>
+                        <li class="todo-row">
+                            <%= element.text %> 
+                            <form>
+                                <button type="submit">&times;</button>
+                            </form>
+                            <form>
+                                <button type="submit">&#10003;</button>
+                            </form>
+                        </li>
+                    <% }) %>
                 </ol>
             </div>
             <div class="card-body-col-right">
