@@ -12,6 +12,8 @@
   "dependencies": {
     "ejs": "^3.1.6",
     "express": "^4.17.3",
-    "pg": "^8.7.3"
+    "method-override": "^3.0.0",
+    "pg": "^8.7.3",
+    "uuid": "^8.3.2"
   }
 }
