@@ -17,4 +17,4 @@ insert into todos (id, text)
 values ('3', 'Our unique todo');
 
 create user app_rw;
-grant select, insert, update, delete on todos to app_ew;
+grant select, insert, update, delete on todos to app_rw;
