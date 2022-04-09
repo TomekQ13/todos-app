@@ -9,7 +9,6 @@ app.use(methodOverride('_method'))
 app.use(express.static(__dirname + '/public'))
 
 const { Client } = require('pg')
-console.log('postgres user is ' + process.env.POSTGRES_RW_USER)
 const client = new Client({
     user: process.env.POSTGRES_RW_USER,
     host: process.env.POSTGRES_HOST,
