@@ -6,6 +6,7 @@ const methodOverride = require('method-override')
 app.set('view engine', 'ejs')
 app.use(express.urlencoded({ extended: false }))
 app.use(methodOverride('_method'))
+app.use(express.static(__dirname + '/public'))
 
 const { Client } = require('pg')
 const client = new Client({
