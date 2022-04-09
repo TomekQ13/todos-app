@@ -15,7 +15,7 @@ services:
       - '5432:5432'
   app:
     build:
-      context: ./
+      context: ./app/
     ports:
       - '3000:3000'
     restart: 'always'
