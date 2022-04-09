@@ -25,6 +25,6 @@ services:
     environment:
       - POSTGRES_RW_USER
       - POSTGRES_HOST
-      - POSTGRES_DATABASE
+      - POSTGRES_DB
       - POSTGRES_RW_PASSWORD
       - POSTGRES_PORT
