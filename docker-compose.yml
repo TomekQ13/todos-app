@@ -12,8 +12,8 @@ services:
     volumes:
       - ./database:/var/lib/postgresql/data
       - ./scripts:/home/scripts
-    ports:
-      - '5432:5432'
+    # ports:
+    #   - '5432:5432'
   app:
     build:
       context: ./app/
