@@ -16,5 +16,5 @@ values ('2', 'Write CSS');
 insert into todos (id, text)
 values ('3', 'Our unique todo');
 
-createuser app_rw;
-grant select, insert, update, delete on todos in schema public to app_rw;
+create user app_rw;
+grant select, insert, update, delete on todos to app_ew;
