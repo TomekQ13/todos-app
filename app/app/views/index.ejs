@@ -13,7 +13,7 @@
             <h1>To Do App</h1>
         </div>
         <div class="card-body">
-            <form action="/" method="POST" class="my-form">
+            <form action="/todos" method="POST" class="my-form">
                 <input type="text" id="todo" name="todo" title="todo">
                 <button class="btn btn-add" type="submit">Add</button>
             </form>
@@ -24,10 +24,10 @@
                         <% todosToDo.forEach(todo => { %>
                             <li class="todo-row todo-row-todo">
                                 <%= todo.text %> 
-                                <form action="/<%= todo.id %>?_method=DELETE" method="POST">
+                                <form action="/todos/<%= todo.id %>?_method=DELETE" method="POST">
                                     <button class="btn btn-delete icon" type="submit">&times;</button>
                                 </form>
-                                <form action="/<%= todo.id %>?_method=PUT" method="POST">
+                                <form action="/todos/<%= todo.id %>?_method=PUT" method="POST">
                                     <button class="btn btn-done icon" type="submit">&#10003;</button>
                                 </form>
                             </li>
@@ -40,7 +40,7 @@
                         <% todosDone.forEach(todo => { %>
                             <li class="todo-row todo-row-done">
                                 <%= todo.text %> 
-                                <form action="/<%= todo.id %>?_method=DELETE" method="POST">
+                                <form action="/todos/<%= todo.id %>?_method=DELETE" method="POST">
                                     <button class="btn btn-delete icon" type="submit">&times;</button>
                                 </form>
                             </li>

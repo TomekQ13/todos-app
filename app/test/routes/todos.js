@@ -2,7 +2,8 @@ const chai = require('chai')
 const { expect } = require('chai')
 const chaiHttp = require('chai-http')
 
-const { app, client } = require('../app/app')
+const app = require('../../app/app')
+const client = require('../../app/db')
 
 chai.use(chaiHttp)
 
@@ -22,7 +23,7 @@ describe('Testing app', () => {
     describe('Test GET endpoint', () => {
         it('HTML with a correct response status', (done) => {
             chai.request(app)
-            .get('/')
+            .get('/todos')
             .end((_err, res) => {
                 expect(res).to.have.status(200)
                 done()
@@ -33,7 +34,7 @@ describe('Testing app', () => {
     describe('Test POST endpoint', () => {
         it('Correct redirection on ToDo creation', (done) => {
             chai.request(app)
-            .post('/')
+            .post('/todos')
             .type('form')
             .send(TESTING_TODO)
             .redirects(0)
@@ -59,7 +60,7 @@ describe('Testing app', () => {
         describe('Test PUT endpoint', () => {
             it('Correct redirection on ToDo update', (done) => {
                 chai.request(app)
-                .post(`/${testingToDoId}`)
+                .post(`/todos/${testingToDoId}`)
                 .query({_method: 'PUT'})
                 .redirects(0)
                 .end((_err, res) => {
@@ -82,7 +83,7 @@ describe('Testing app', () => {
         describe('Test Delete endpoint', () => {
             it('Correct redirection on ToDo update', (done) => {
                 chai.request(app)
-                .post(`/${testingToDoId}`)
+                .post(`/todos/${testingToDoId}`)
                 .query({_method: 'DELETE'})
                 .redirects(0)
                 .end((_err, res) => {
