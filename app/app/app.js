@@ -2,11 +2,15 @@ const express = require('express')
 const app = express()
 const { v4: uuidv4 } = require('uuid')
 const methodOverride = require('method-override')
+const path = require('path')
 
 app.set('view engine', 'ejs')
+app.set('views', path.join(__dirname, '/views'))
+app.use(express.static(path.join(__dirname, '/public')))
+
 app.use(express.urlencoded({ extended: false }))
 app.use(methodOverride('_method'))
-app.use(express.static(__dirname + '/public'))
+
 
 const { Client } = require('pg')
 const client = new Client({
@@ -79,3 +83,5 @@ app.delete('/:todoid', async (req, res) => {
 app.listen(3000, () => {
     console.log('Application started and listening on port 3000')
 })
+
+module.exports = { app, client }
