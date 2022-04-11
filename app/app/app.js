@@ -13,6 +13,9 @@ app.use(methodOverride('_method'))
 const todosRouter = require('./routes/todos')
 app.use('/todos', todosRouter)
 
+app.get('/', (req, res) => {
+    res.redirect('/todos')
+})
 
 app.listen(80, () => {
     console.log('Application started and listening on port 80')
