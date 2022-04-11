@@ -14,8 +14,8 @@ const todosRouter = require('./routes/todos')
 app.use('/todos', todosRouter)
 
 
-app.listen(3000, () => {
-    console.log('Application started and listening on port 3000')
+app.listen(80, () => {
+    console.log('Application started and listening on port 80')
 })
 
 module.exports = app
