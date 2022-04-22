@@ -28,4 +28,3 @@ services:
       - POSTGRES_DB
       - POSTGRES_RW_PASSWORD
       - POSTGRES_PORT
-      - COOKIE_AGE_IN_SECONDS
