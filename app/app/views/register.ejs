@@ -1,0 +1,64 @@
+<div class="card">
+    <div class="card-header">
+        Register
+    </div>
+    <form class="register-login-form" action="/user/register" method="POST">
+        <div class="form-group">
+            <label for="username" class="form-label">Username</label>
+            <input
+                type="text"
+                name="username"
+                id="username"
+                class="text-input
+                <% if (formErrors.username) { %>
+                    text-input-error
+                <% } %>
+                ">
+                <% if (formErrors.username) { %>
+                    <small class="form-error-text">
+                        <%= formErrors.username[0] %> 
+                    </small>
+                <% } %>
+        </div>
+        <div class="form-group">
+            <label for="password" class="form-label">Password</label>
+            <input
+            type="password"
+            name="password"
+            id="password"
+            class="text-input
+            <% if (formErrors.password) { %>
+                text-input-error
+            <% } %>
+            ">
+            <% if (formErrors.password) { %>
+                <small class="form-error-text">
+                    <%= formErrors.password[0] %> 
+                </small>
+            <% } %>
+        </div>
+        <div class="form-group">
+            <label for="repeat_password" class="form-label">Repeat password</label>
+            <input
+            type="password"
+            name="repeat_password"
+            id="repeat_password"
+            class="text-input
+            <% if (formErrors.repeatPassword) { %>
+                text-input-error
+            <% } %>
+            ">
+            <% if (formErrors.repeatPassword) { %>
+                <small class="form-error-text">
+                    <%= formErrors.repeatPassword[0] %> 
+                </small>
+            <% } %>
+        </div>
+        <div class="form-group">
+            <button class="btn btn-add btn-submit">Register</button>
+        </div>
+        <div class="form-label">
+            Already have an account? <a href="/user/login">Sign in here.</a>
+        </div>
+    </form>
+</div>

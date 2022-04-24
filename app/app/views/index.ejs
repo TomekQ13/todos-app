@@ -1,54 +1,42 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <div class="card">
-        <div class="card-header">
-            <h1>To Do App</h1>
-        </div>
-        <div class="card-body">
-            <form action="/todos" method="POST" class="my-form">
-                <input type="text" id="todo" name="todo" title="todo">
-                <button class="btn btn-add" type="submit">Add</button>
-            </form>
-            <div class="card-body-cols">
-                <div class="card-body-col-left">
-                    <h2>To do</h2>
-                    <ol class="card-body-to-do-list">
-                        <% todosToDo.forEach(todo => { %>
-                            <li class="todo-row todo-row-todo">
-                                <%= todo.text %> 
-                                <form action="/todos/<%= todo.id %>?_method=DELETE" method="POST">
-                                    <button class="btn btn-delete icon" type="submit">&times;</button>
-                                </form>
-                                <form action="/todos/<%= todo.id %>?_method=PUT" method="POST">
-                                    <button class="btn btn-done icon" type="submit">&#10003;</button>
-                                </form>
-                            </li>
-                        <% }) %>
-                    </ol>
-                </div>
-                <div class="card-body-col-right">
-                    <h2>Done</h2>
-                    <ol class="card-body-to-do-list">
-                        <% todosDone.forEach(todo => { %>
-                            <li class="todo-row todo-row-done">
-                                <%= todo.text %> 
-                                <form action="/todos/<%= todo.id %>?_method=DELETE" method="POST">
-                                    <button class="btn btn-delete icon" type="submit">&times;</button>
-                                </form>
-                            </li>
-                        <% }) %>
-                    </ol>
-                </div>
+<div class="card">
+    <div class="card-header">
+        <h1>To Do App</h1>
+    </div>
+    <div class="card-body">
+        <form action="/todos" method="POST" class="my-form">
+            <input type="text" id="todo" name="todo" title="todo">
+            <button class="btn btn-add" type="submit">Add</button>
+        </form>
+        <div class="card-body-cols">
+            <div class="card-body-col-left">
+                <h2>To do</h2>
+                <ol class="card-body-to-do-list">
+                    <% todosToDo.forEach(todo => { %>
+                        <li class="todo-row todo-row-todo">
+                            <%= todo.text %> 
+                            <form action="/todos/<%= todo.id %>?_method=DELETE" method="POST">
+                                <button class="btn btn-delete icon" type="submit">&times;</button>
+                            </form>
+                            <form action="/todos/<%= todo.id %>?_method=PUT" method="POST">
+                                <button class="btn btn-done icon" type="submit">&#10003;</button>
+                            </form>
+                        </li>
+                    <% }) %>
+                </ol>
+            </div>
+            <div class="card-body-col-right">
+                <h2>Done</h2>
+                <ol class="card-body-to-do-list">
+                    <% todosDone.forEach(todo => { %>
+                        <li class="todo-row todo-row-done">
+                            <%= todo.text %> 
+                            <form action="/todos/<%= todo.id %>?_method=DELETE" method="POST">
+                                <button class="btn btn-delete icon" type="submit">&times;</button>
+                            </form>
+                        </li>
+                    <% }) %>
+                </ol>
             </div>
         </div>
     </div>
-</body>
-</html>
+</div>

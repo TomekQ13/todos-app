@@ -19,6 +19,12 @@ body {
     max-width: 500px;
 }
 
+.card-header {
+    font-weight: bold;
+    margin-bottom: 0.6rem;
+    align-self: baseline;
+}
+
 .card-body {
     display: flex;
     flex-direction: column;
@@ -71,6 +77,40 @@ body {
     max-width: 300px;
 }
 
+.register-login-form {
+    width: 300px;
+    display: grid;
+    row-gap: 0.5rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-label {
+    font-size: small;
+    color: rgb(63, 63, 63)
+}
+
+.text-input {
+    margin-top: 1px;
+    border-radius: .25rem;
+    height: 1.5rem;
+    border: 1px rgb(63, 63, 63) solid;
+    font-weight: bold;
+}
+
+.form-error-text {
+    margin-top: 2px;
+    font-size: small;
+    color: rgb(190, 0, 0)
+}
+
+.text-input-error {
+    border: 1px rgb(190, 0, 0) solid;
+}
+
 .btn {
     border: none;
     border-radius: .25rem;
@@ -107,6 +147,10 @@ body {
 
 .btn-add:hover, .btn-add:focus {
     background-color: hsl(206, 100%, 60%);
+}
+
+.btn-submit {
+    height: 1.5rem;
 }
 
 @media (max-width: 768px) {
