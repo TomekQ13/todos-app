@@ -16,33 +16,33 @@
                 ">
                 <% if (formErrors.username) { %>
                     <small class="form-error-text">
-                        <%= formErrors.username[0] %> 
+                        <%= formErrors.username %> 
                     </small>
                 <% } %>
         </div>
         <div class="form-group">
             <label for="password" class="form-label">Password</label>
-            <input
-            type="password"
-            name="password"
-            id="password"
+            <input 
+            type="password" 
+            name="password" 
+            id="password" 
             class="text-input
             <% if (formErrors.password) { %>
                 text-input-error
             <% } %>
             ">
             <% if (formErrors.password) { %>
-                <small class="form-error-text">
-                    <%= formErrors.password[0] %> 
+                <small  class="form-error-text">
+                    <%= formErrors.password %> 
                 </small>
             <% } %>
         </div>
         <div class="form-group">
             <label for="repeat_password" class="form-label">Repeat password</label>
-            <input
-            type="password"
-            name="repeat_password"
-            id="repeat_password"
+            <input 
+            type="password" 
+            name="repeat_password" 
+            id="repeat_password" 
             class="text-input
             <% if (formErrors.repeatPassword) { %>
                 text-input-error
@@ -50,7 +50,7 @@
             ">
             <% if (formErrors.repeatPassword) { %>
                 <small class="form-error-text">
-                    <%= formErrors.repeatPassword[0] %> 
+                    <%= formErrors.repeatPassword %> 
                 </small>
             <% } %>
         </div>

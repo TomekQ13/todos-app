@@ -102,7 +102,6 @@ body {
 }
 
 .form-error-text {
-    margin-top: 2px;
     font-size: small;
     color: rgb(190, 0, 0)
 }
