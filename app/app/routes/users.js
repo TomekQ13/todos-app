@@ -3,6 +3,7 @@ const client = require('../db')
 const router = express.Router()
 const bcrypt = require('bcrypt')
 const { v4: uuidv4 } = require('uuid')
+const { authenticateSession } = require('../session')
 
 router.get('/register', (req, res) => {
     return res.render('register', { formErrors: {} })
@@ -52,11 +53,41 @@ router.post('/register', async (req, res) => {
 
 
 router.get('/login', (req, res) => {
-    return res.render('login')
+    return res.render('login', { formErrors: {} })
 })
 
-router.post('/login', (req, res) => {
-    return
+router.post('/login', async (req, res) => {
+    let formErrors = {}
+    let resp
+    try {
+        resp = await client.query(`
+            select id, password
+            from users
+            where username = $1        
+        `, [req.body.username.trim()])
+    } catch (e) {
+        console.error(e)
+        return res.redirect('/user/login')
+    }
+
+    const generalError = `
+    User with this username does not exist or the password is incorrect
+    `
+
+    if (resp.rowCount === 0) {
+        formErrors.generalError = generalError
+        return res.render('login', {formErrors: formErrors})
+    }
+
+    const existingUser = resp.rows[0]
+    const compare = await bcrypt.compare(req.body.password, existingUser.password)
+    if (!compare) {
+        formErrors.generalError = generalError
+        return res.render('login', {formErrors: formErrors})
+    }
+    
+    await authenticateSession.call(req, existingUser.id)
+    return res.redirect('/todos')
 })
 
 module.exports = router

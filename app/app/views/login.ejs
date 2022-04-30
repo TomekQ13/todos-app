@@ -1,1 +1,42 @@
-Login
+<div class="card">
+    <div class="card-header">
+        Login
+    </div>
+    <form class="register-login-form" action="/user/login" method="POST">
+        <div class="form-group">
+            <label for="username" class="form-label">Username</label>
+            <input
+                type="text"
+                name="username"
+                id="username"
+                class="text-input
+                <% if (formErrors.generalError) { %>
+                    text-input-error
+                <% } %>
+                ">
+        </div>
+        <div class="form-group">
+            <label for="password" class="form-label">Password</label>
+            <input 
+            type="password" 
+            name="password" 
+            id="password" 
+            class="text-input
+            <% if (formErrors.generalError) { %>
+                text-input-error
+            <% } %>
+            ">
+            <% if (formErrors.generalError) { %>
+                <small  class="form-error-text">
+                    <%= formErrors.generalError %> 
+                </small>
+            <% } %>
+        </div>
+        <div class="form-group">
+            <button class="btn btn-add btn-submit">Log in</button>
+        </div>
+        <div class="form-label">
+            Don't have an account? <a href="/user/login">Sign up here.</a>
+        </div>
+    </form>
+</div>

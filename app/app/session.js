@@ -19,7 +19,7 @@ async function getSession(sessionId) {
     let session
     try {
         session = await client.query(`
-            select id, valid_to
+            select id, valid_to, user_id
             from sessions
             where
                 id = $1
@@ -49,6 +49,10 @@ async function issueSessionId() {
         httpOnly: true,
         signed: true
     })
+    return {
+        id: sessionId,
+        valid_to: currentTime
+    }
 }
 
 function session() {
@@ -58,20 +62,39 @@ function session() {
 
         if (session === undefined || req.signedCookies['sessionId'] === undefined) {
             try {
-                await issueSessionId.call(res)
+                const newSession = await issueSessionId.call(res)
+                req.session = newSession
             } catch (e) {
                 console.error(e)
             }
             return next()            
         }
         req.session = session
-        return next()
+        next()
     }
+}
+
+async function authenticateSession(userId) {
+    if (!this.session) {
+        return console.error('Session is required for session authentication')
+    }
+
+    try {
+        await client.query(`
+            update sessions
+            set user_id = $1
+            where id = $2
+        `, [userId, this.session.id])
+    } catch (e) {
+        console.error(e)
+    }
+    this.session.user_id = userId
 }
 
 module.exports = {
     createSession,
     getSession,
     issueSessionId,
-    session
+    session,
+    authenticateSession
 }

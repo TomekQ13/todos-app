@@ -2,11 +2,17 @@ const express = require('express')
 const router = express.Router()
 const client = require('../db')
 const { v4: uuidv4 } = require('uuid')
+const { checkAuthenticated } = require('../auth')
 
-router.get('/', async (req, res) => {
+router.get('/', checkAuthenticated(), async (req, res) => {
     let resp
     try {
-        resp = await client.query('select id, "text", done from todos')
+        resp = await client.query(`
+            select
+                id, "text", done
+            from todos
+            where user_id = $1
+            `, [req.session.user_id])
     } catch (e) {
         console.error(e)
     }
@@ -16,40 +22,40 @@ router.get('/', async (req, res) => {
     return res.render('index', { todosToDo: todosToDo, todosDone: todosDone })
 })
 
-router.post('/', async (req, res) => {
+router.post('/', checkAuthenticated(), async (req, res) => {
     let respone
     try {
         respone = await client.query(`
-            insert into todos (id, text)
-            values ($1, $2)
-            `, [uuidv4(), req.body.todo])
+            insert into todos (id, user_id, text)
+            values ($1, $2, $3)
+            `, [uuidv4(), req.session.user_id, req.body.todo])
     } catch (e) {
         console.error(e)
     }
     return res.redirect('/todos')
 })
 
-router.put('/:todoid', async (req, res) => {
+router.put('/:todoid', checkAuthenticated(), async (req, res) => {
     let resp
     try {
         resp = await client.query(`
             update todos
             set done = true
-            where id = $1
-        `, [req.params.todoid])
+            where id = $1 and user_id = $2
+        `, [req.params.todoid, req.session.user_id])
     } catch (e) {
         console.error(e)
     }
     return res.redirect ('/todos')
 })
 
-router.delete('/:todoid', async (req, res) => {
+router.delete('/:todoid', checkAuthenticated(),  async (req, res) => {
     let resp
     try {
         resp = await client.query(`
             delete from todos
-            where id = $1
-        `, [req.params.todoid])
+            where id = $1 and user_id = $2
+        `, [req.params.todoid, req.session.user_id])
     } catch (e) {
         console.error(e)
     }
