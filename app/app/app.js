@@ -28,8 +28,8 @@ app.get('/', (req, res) => {
     res.redirect('/todos')
 })
 
-app.listen(80, () => {
-    console.log('Application started and listening on port 80')
+app.listen(3000, () => {
+    console.log('Application started and listening on port 3000')
 })
 
 module.exports = app
