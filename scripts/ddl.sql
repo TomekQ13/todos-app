@@ -2,6 +2,7 @@ drop table if exists todos;
 create table todos (
     id varchar primary key,
     "text" text,
+    user_id varchar,
     done boolean default false,
     added_dttm timestamp default now()
 

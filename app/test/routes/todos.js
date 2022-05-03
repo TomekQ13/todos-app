@@ -11,12 +11,49 @@ const TESTING_TODO = {
     todo: 'testing ToDo text'
 }
 
+TESTTING_USER = {
+    username: 'testingUser',
+    password: 'testingPassword',
+    repeat_password: 'testingPassword'
+}
+
 describe('Testing app', () => {
-    before(async () => {
+    let COOKIE
+    before(async () => {        
         await client.query(`
             delete from todos
             where "text" = $1            
         `, [TESTING_TODO.todo])
+
+        await client.query(`
+            delete from users
+            where username = $1
+        `, [TESTING_USER.username])
+    
+        await new Promise((resolve) => {
+            chai.request(app)
+            .post('/user/register')
+            .type('form')
+            .send(TESTING_USER)
+            .end(() => {
+                resolve()
+            })
+        })
+
+        return new Promise((resolve) => {
+            chai.request(app)
+            .post('/user/login')
+            .type('form')
+            .send({
+                username: TESTING_USER.username,
+                password: TESTING_USER.password
+            })
+            .redirects(0)
+            .end((_err, res) => {
+                COOKIE = res.header['set-cookie'][0]
+                resolve()
+            })
+        })
     })
 
 
@@ -24,8 +61,10 @@ describe('Testing app', () => {
         it('HTML with a correct response status', (done) => {
             chai.request(app)
             .get('/todos')
+            .set('Cookie', COOKIE)
             .end((_err, res) => {
                 expect(res).to.have.status(200)
+                expect(res.redirect).to.equal(false)
                 done()
             })
         })
@@ -38,8 +77,10 @@ describe('Testing app', () => {
             .type('form')
             .send(TESTING_TODO)
             .redirects(0)
+            .set('Cookie', COOKIE)
             .end((_err, res) => {
                 expect(res.redirect).to.equal(true)
+                expect(res.header.location).to.equal('/todos')
                 done()
             })
         })
@@ -63,8 +104,10 @@ describe('Testing app', () => {
                 .post(`/todos/${testingToDoId}`)
                 .query({_method: 'PUT'})
                 .redirects(0)
+                .set('Cookie', COOKIE)
                 .end((_err, res) => {
                     expect(res.redirect).to.equal(true)
+                    expect(res.header.location).to.equal('/todos')
                     done()
                 })
             })
@@ -86,8 +129,10 @@ describe('Testing app', () => {
                 .post(`/todos/${testingToDoId}`)
                 .query({_method: 'DELETE'})
                 .redirects(0)
+                .set('Cookie', COOKIE)
                 .end((_err, res) => {
                     expect(res.redirect).to.equal(true)
+                    expect(res.header.location).to.equal('/todos')
                     done()
                 })
             })

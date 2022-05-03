@@ -7,7 +7,7 @@ const app = require('../app/app')
 
 chai.use(chaiHttp)
 
-let TESTING_VALID_TO_SECONDS = 1
+let TESTING_VALID_TO_SECONDS = 1.2
 let TESTING_VALID_TO = new Date()
 TESTING_VALID_TO.setSeconds(
     TESTING_VALID_TO.getSeconds() + TESTING_VALID_TO_SECONDS
@@ -16,6 +16,12 @@ TESTING_VALID_TO.setSeconds(
 const  TESTING_SESSION = {
     sessionId: 'testSessionId',
     validTo:TESTING_VALID_TO
+}
+
+TESTING_USER = {
+    username: 'testingUser',
+    password: 'testingPassword',
+    repeat_password: 'testingPassword'
 }
 
 describe('Testing session', () => {
@@ -51,7 +57,7 @@ describe('Testing session', () => {
 
     describe('Get session that is not valid anymore', () => {
         before(async () => {
-            await sleep(1500)
+            await sleep(1700)
         })
 
         it('Return undefined', async () => {
@@ -102,6 +108,70 @@ describe('Testing session', () => {
                 ).to.not.equal(firstSessionId)
                 done()
             })
+        })
+    })
+
+    describe('Testing session authentication', () => {
+        let LAST_SESSION_ID
+        before(async () => {
+            await client.query(`
+                delete from users
+                where username = $1
+            `, [TESTING_USER.username])
+        
+            await new Promise((resolve) => {
+                chai.request(app)
+                .post('/user/register')
+                .type('form')
+                .send(TESTING_USER)
+                .end(() => {
+                    resolve()
+                })
+            })
+
+            return new Promise((resolve) => {
+                chai.request(app)
+                .post('/user/login')
+                .type('form')
+                .send({
+                    username: TESTING_USER.username,
+                    password: TESTING_USER.password
+                })
+                .redirects(0)
+                .end((_err, res) => {
+                    const cookie = res.header['set-cookie'][0]
+                    LAST_SESSION_ID = cookie.slice(14,50)
+                    resolve()
+                })
+            })
+        })
+
+        it('Check if the session for the user was authenticated' , async () => {
+            const resp = await client.query(`
+                select users.username
+                from sessions
+                inner join users
+                on sessions.user_id = users.id
+                where sessions.id = $1
+            `, [LAST_SESSION_ID])
+            const session = resp.rows[0]
+            expect(session.username).to.equal(TESTING_USER.username)
+        })
+
+        after(async () => {
+            await client.query(`
+                delete from sessions
+                where user_id in (
+                    select id
+                    from users
+                    where username = $1
+                )
+            `, [TESTING_USER.username])
+
+            return await client.query(`
+                    delete from users
+                    where username = $1
+            `, [TESTING_USER.username])
         })
     })
 
