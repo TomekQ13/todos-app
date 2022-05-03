@@ -20,6 +20,17 @@ body {
 }
 
 .card-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.btn-logout {
+    height: 21px;
+}
+
+.card-title {
     font-weight: bold;
     margin-bottom: 0.6rem;
     align-self: baseline;

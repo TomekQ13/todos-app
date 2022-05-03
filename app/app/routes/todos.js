@@ -8,11 +8,10 @@ router.get('/', checkAuthenticated(), async (req, res) => {
     let resp
     try {
         resp = await client.query(`
-            select
-                id, "text", done
+            select id, "text", done
             from todos
             where user_id = $1
-            `, [req.session.user_id])
+        `, [req.session.user_id])
     } catch (e) {
         console.error(e)
     }
@@ -49,7 +48,7 @@ router.put('/:todoid', checkAuthenticated(), async (req, res) => {
     return res.redirect ('/todos')
 })
 
-router.delete('/:todoid', checkAuthenticated(),  async (req, res) => {
+router.delete('/:todoid', checkAuthenticated(), async (req, res) => {
     let resp
     try {
         resp = await client.query(`

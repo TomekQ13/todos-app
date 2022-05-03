@@ -4,12 +4,13 @@ const router = express.Router()
 const bcrypt = require('bcrypt')
 const { v4: uuidv4 } = require('uuid')
 const { authenticateSession } = require('../session')
+const { checkAuthenticated, checkNotAuthenticated } = require('../auth')
 
-router.get('/register', (req, res) => {
+router.get('/register', checkNotAuthenticated('/todos'), (req, res) => {
     return res.render('register', { formErrors: {} })
 })
 
-router.post('/register', async (req, res) => {
+router.post('/register', checkNotAuthenticated('/todos'), async (req, res) => {
     let formErrors = {}
     if (req.body.password.length < process.env.minPasswordLength) {
         formErrors.password = `Password must be at least ${process.env.minPasswordLength} characters long.`
@@ -52,42 +53,60 @@ router.post('/register', async (req, res) => {
 })
 
 
-router.get('/login', (req, res) => {
+router.get('/login', checkNotAuthenticated('/todos'), (req, res) => {
     return res.render('login', { formErrors: {} })
 })
 
-router.post('/login', async (req, res) => {
+router.post('/login', checkNotAuthenticated('/todos'), async (req, res) => {
     let formErrors = {}
     let resp
     try {
         resp = await client.query(`
             select id, password
             from users
-            where username = $1        
+            where username = $1
         `, [req.body.username.trim()])
     } catch (e) {
         console.error(e)
         return res.redirect('/user/login')
     }
 
-    const generalError = `
+    const generalErrorMsg = `
     User with this username does not exist or the password is incorrect
     `
 
     if (resp.rowCount === 0) {
-        formErrors.generalError = generalError
-        return res.render('login', {formErrors: formErrors})
+        formErrors.generalError = generalErrorMsg
+        return res.render('login', { formErrors: formErrors })
     }
 
     const existingUser = resp.rows[0]
     const compare = await bcrypt.compare(req.body.password, existingUser.password)
     if (!compare) {
-        formErrors.generalError = generalError
-        return res.render('login', {formErrors: formErrors})
+        formErrors.generalError = generalErrorMsg
+        return res.render('login', { formErrors: formErrors })
     }
-    
-    await authenticateSession.call(req, existingUser.id)
+
+    const updateResp = await authenticateSession.call(req, existingUser.id)
+    if (updateResp.rowCount === 0) {
+        console.error('Session not found for session authentication')
+        return res.redirect('/user/login')        
+    }
     return res.redirect('/todos')
+})
+
+router.delete('/logout', checkAuthenticated(), async (req, res) => {
+    try {
+        await client.query(`
+            update sessions
+            set valid_to = now() - interval '5 second'
+            where id = $1 and user_id = $2
+        `, [req.session.id, req.session.user_id])
+    } catch (e) {
+        console.error(e)
+        res.redirect('/todos')
+    }
+    res.redirect('/user/login')
 })
 
 module.exports = router

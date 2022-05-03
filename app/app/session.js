@@ -70,17 +70,16 @@ function session() {
             return next()            
         }
         req.session = session
-        next()
+        return next()
     }
 }
 
 async function authenticateSession(userId) {
-    if (!this.session) {
-        return console.error('Session is required for session authentication')
-    }
+    if (!this.session) return console.error('Session is required for session authentication')
 
+    let resp
     try {
-        await client.query(`
+        resp = await client.query(`
             update sessions
             set user_id = $1
             where id = $2
@@ -89,6 +88,7 @@ async function authenticateSession(userId) {
         console.error(e)
     }
     this.session.user_id = userId
+    return resp
 }
 
 module.exports = {

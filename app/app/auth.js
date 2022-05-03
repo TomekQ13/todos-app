@@ -1,7 +1,8 @@
 function checkAuthenticated() {
     return (req, res, next) => {
         if (!req.session) {
-            return console.error(`req.session is required before checking authentication`)
+            console.error('req.session id required before checking authentication')
+            return res.redirect('/user/login')
         }
 
         if (!req.session.user_id) {
@@ -14,13 +15,17 @@ function checkAuthenticated() {
 function checkNotAuthenticated(redirectRoute) {
     return (req, res, next) => {
         if (!req.session) {
-            return console.error(`req.session is required before checking authentication`)
+            console.error('req.session id required before checking authentication')
+            return res.redirect('/user/login')
         }
-    }
 
-    if (req.session.user_id) return res.redirect(redirectRoute)
-    next()
+        if (req.session.user_id) {
+            return res.redirect(redirectRoute)
+        }
+        next()
+    }
 }
+
 module.exports = {
     checkAuthenticated,
     checkNotAuthenticated
